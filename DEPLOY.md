@@ -6,14 +6,14 @@ push to main ─► GitHub Actions ─► build image ─► ghcr.io/two2bitsdev
                                         └─► scp deploy/ to VPS ─► ssh: deploy.sh <sha>
                                                                      docker compose pull + up -d
 
-Browser ─► Cloudflare (proxied, Full strict) ─► VPS :443 nginx (Origin cert) ─► frontend:3000
+Browser ─► Cloudflare (proxied, Full strict) ─► VPS host nginx :443 (Origin cert) ─► 127.0.0.1:18420 ─► container :3000
 ```
 
 | File | Purpose |
 | --- | --- |
 | `Dockerfile` | Multi-stage build → minimal Next.js `standalone` image (non-root, healthcheck) |
-| `deploy/docker-compose.yml` | `frontend` + `nginx` (TLS on 80/443) |
-| `deploy/nginx/two-bits.conf` | HTTP→HTTPS, www→apex, Cloudflare real-IP, reverse proxy |
+| `deploy/docker-compose.yml` | `frontend` container, published on `127.0.0.1:18420` only |
+| `deploy/nginx/two-bits.conf` | Site config for the VPS's **host nginx**: HTTP→HTTPS, www→apex, Cloudflare real-IP, reverse proxy (installed once by hand, step 1.5) |
 | `deploy/deploy.sh` | Runs on the VPS: pull tag, restart, prune old images |
 | `.github/workflows/deploy.yml` | CI/CD on every push to `main` |
 
@@ -53,22 +53,29 @@ ls ~/.ssh/                     # e.g. id_ed25519 + id_ed25519.pub (or id_rsa + i
 
 The examples below use `~/.ssh/id_ed25519`. Replace it with your key's file name.
 
-Authorize that key for the `deploy` user and check that it works:
+Print your **public** key locally:
 
 ```bash
-ssh-copy-id -i ~/.ssh/id_ed25519.pub deploy@76.13.55.119
-ssh -i ~/.ssh/id_ed25519 deploy@76.13.55.119 'docker ps'   # must work without sudo
+cat ~/.ssh/id_ed25519.pub      # ssh-ed25519 AAAA... you@host
 ```
 
-> `ssh-copy-id` needs a way to log in as `deploy`, but that user has no password. If it fails, copy the
-> key over from the root account on the VPS instead:
->
-> ```bash
-> sudo mkdir -p /home/deploy/.ssh
-> sudo cp /root/.ssh/authorized_keys /home/deploy/.ssh/authorized_keys
-> sudo chown -R deploy:deploy /home/deploy/.ssh
-> sudo chmod 700 /home/deploy/.ssh && sudo chmod 600 /home/deploy/.ssh/authorized_keys
-> ```
+On the **VPS as root**, authorize it for `deploy` (paste the whole line between the quotes).
+`deploy` has no password, so `ssh-copy-id` cannot do this step:
+
+```bash
+mkdir -p /home/deploy/.ssh
+echo 'ssh-ed25519 AAAA...your-public-key... you@host' >> /home/deploy/.ssh/authorized_keys
+chown -R deploy:deploy /home/deploy/.ssh
+chmod 700 /home/deploy/.ssh && chmod 600 /home/deploy/.ssh/authorized_keys
+```
+
+Back on your **local machine**, check that it works:
+
+```bash
+ssh -i ~/.ssh/id_ed25519 deploy@76.13.55.119 'docker ps && touch /opt/two-bits/frontend/.ok && echo OK'
+```
+
+This must print `OK` without asking for a password.
 
 The **private** key (`~/.ssh/id_ed25519`, the file **without** `.pub`) goes into the GitHub secret `VPS_SSH_KEY` (step 2):
 
@@ -96,18 +103,42 @@ sudo openssl x509 -in /etc/ssl/two-bits/cert.pem -noout -subject -dates   # sani
 The file names must be exactly `cert.pem` and `key.pem` (the nginx config refers to them).
 nginx's master process runs as root, so it can read a key file set to `600`.
 
-### 1.5 Firewall
+### 1.5 Host nginx site
+
+The VPS already runs nginx on the host for the other sites. That nginx owns ports 80/443, and each app
+container publishes only on `127.0.0.1:<port>`. This site follows the same pattern: the container listens on
+`127.0.0.1:18420`, and host nginx proxies `two-bits.dev` to it.
+
+First confirm that the proxy on 80/443 is nginx:
 
 ```bash
-sudo ufw allow OpenSSH
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw enable
+sudo ss -tlnp | grep -E ':(80|443) '     # should show "nginx"
+nginx -v
 ```
 
-> Ports 80/443 must be free. If another container or a host nginx/apache already binds them,
-> check with `sudo ss -tlnp | grep -E ':80|:443'`, then either stop it or add this site to that proxy
-> instead of running the `nginx` service here.
+Install the site. Copy `deploy/nginx/two-bits.conf` from the repo; one way is from your **local machine**:
+
+```bash
+scp deploy/nginx/two-bits.conf root@76.13.55.119:/etc/nginx/sites-available/two-bits.dev
+```
+
+Then on the **VPS as root**:
+
+```bash
+ln -s /etc/nginx/sites-available/two-bits.dev /etc/nginx/sites-enabled/two-bits.dev
+nginx -t && systemctl reload nginx
+```
+
+Always run `nginx -t` before reloading. If the test fails, nginx keeps running with its old config, so the
+other sites are not affected.
+
+> If your nginx has no `sites-available`/`sites-enabled` folders (`ls /etc/nginx`), put the file at
+> `/etc/nginx/conf.d/two-bits.dev.conf` instead.
+>
+> If nginx is **1.25.1 or newer**, `nginx -t` warns that `listen ... http2` is deprecated. The warning is
+> harmless. To silence it, change `listen 443 ssl http2;` to `listen 443 ssl;` plus a separate `http2 on;` line.
+
+Ports 80/443 are already open for the other sites, so the firewall needs no changes.
 
 ---
 
@@ -147,15 +178,16 @@ logs in with that same short-lived token only for the pull, then logs out.
 ## 4. First deploy
 
 ```bash
-git add -A && git commit -m "Add Docker deployment" && git push origin main
+git push origin main
 ```
 
 Watch it under **Actions → Build & Deploy**. Then on the VPS:
 
 ```bash
-cd /opt/two-bits/frontend
-docker compose ps           # both containers Up (frontend: healthy)
-curl -I https://two-bits.dev
+ls -la /opt/two-bits/frontend           # docker-compose.yml, deploy.sh, .env
+docker ps --filter name=two-bits        # two-bits-frontend  Up (healthy)  127.0.0.1:18420->3000/tcp
+curl -I http://127.0.0.1:18420          # the app itself → 200
+curl -I https://two-bits.dev            # through Cloudflare + host nginx → 200
 ```
 
 From then on, **every push to `main` deploys automatically**. To redeploy without a code change:
@@ -167,9 +199,10 @@ From then on, **every push to `main` deploys automatically**. To redeploy withou
 
 ```bash
 docker compose logs -f frontend         # app logs
-docker compose logs -f nginx            # access/error logs
-docker compose restart nginx            # e.g. after replacing the certificate
 cat .env                                # currently deployed tag
+
+sudo tail -f /var/log/nginx/two-bits.access.log /var/log/nginx/two-bits.error.log
+sudo nginx -t && sudo systemctl reload nginx   # after editing the site or replacing the certificate
 ```
 
 **Rollback** to a previous build (tags are the 7-character commit SHAs):
@@ -196,8 +229,10 @@ docker run --rm -p 3000:3000 two-bits-frontend:local   # → http://localhost:30
 | Symptom | Cause / fix |
 | --- | --- |
 | Cloudflare **526** | Encryption mode is not *Full (strict)* with the Origin cert, or the cert/key are wrong or swapped |
-| Cloudflare **521 / 522** | nginx is not running, or 80/443 is blocked by the firewall or VPS provider |
+| Cloudflare **521 / 522** | Host nginx is not running, or 80/443 is blocked by the firewall or VPS provider |
+| **502 Bad Gateway** | The container is down or unhealthy: check `docker ps --filter name=two-bits` and `docker compose logs frontend` |
+| Another site shows up on two-bits.dev | The site config is not enabled, or nginx was not reloaded (step 1.5) |
 | **Too many redirects** | Encryption mode is *Flexible*; set it to *Full (strict)* |
 | Actions: `permission denied (publickey)` | Wrong `VPS_SSH_KEY`, or the public key is missing from `~deploy/.ssh/authorized_keys` |
 | Actions: `denied` on pull | Workflow `packages: read` permission missing, or the package is not linked to the repo |
-| nginx: `bind() ... address already in use` | Something else holds 80/443 (see 1.5) |
+| Actions: `address already in use` on 18420 | Another container took that port; change it in `docker-compose.yml` **and** in the nginx `upstream` |
