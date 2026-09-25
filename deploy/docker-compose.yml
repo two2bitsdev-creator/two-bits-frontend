@@ -1,0 +1,31 @@
+name: two-bits
+
+services:
+  frontend:
+    image: ghcr.io/two2bitsdev-creator/two-bits-frontend:${IMAGE_TAG:-latest}
+    container_name: two-bits-frontend
+    restart: unless-stopped
+    expose:
+      - "3000"
+    networks:
+      - web
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: two-bits-nginx
+    restart: unless-stopped
+    depends_on:
+      frontend:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/two-bits.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/ssl/two-bits:/etc/ssl/two-bits:ro
+    networks:
+      - web
+
+networks:
+  web:
+    name: two-bits-web

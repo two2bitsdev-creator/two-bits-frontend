@@ -1,0 +1,14 @@
+.git
+.github
+.next
+node_modules
+deploy
+Dockerfile
+.dockerignore
+.env*
+!.env.example
+*.pem
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+README.md
