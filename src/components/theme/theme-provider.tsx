@@ -1,0 +1,18 @@
+"use client";
+
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import type { ComponentProps } from "react";
+
+/**
+ * Wraps `next-themes`, giving the app `.dark`-class theming with
+ * no-flash SSR (handled by `suppressHydrationWarning` on `<html>` in
+ * `app/layout.tsx`) and `localStorage` persistence out of the box.
+ */
+function ThemeProvider({
+  children,
+  ...props
+}: ComponentProps<typeof NextThemesProvider>) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+}
+
+export { ThemeProvider };
