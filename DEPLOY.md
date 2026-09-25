@@ -43,17 +43,41 @@ mkdir -p /opt/two-bits/frontend
 chown -R deploy:deploy /opt/two-bits
 ```
 
-### 1.3 SSH key for GitHub Actions
+### 1.3 SSH key for GitHub Actions (reuse your existing key)
 
-On your **local machine**:
+On your **local machine**, find your existing key pair:
 
 ```bash
-ssh-keygen -t ed25519 -C "github-actions-two-bits" -f ~/.ssh/two_bits_deploy -N ""
-ssh-copy-id -i ~/.ssh/two_bits_deploy.pub deploy@76.13.55.119
-ssh -i ~/.ssh/two_bits_deploy deploy@76.13.55.119 'docker ps'   # must work without sudo
+ls ~/.ssh/                     # e.g. id_ed25519 + id_ed25519.pub (or id_rsa + id_rsa.pub)
 ```
 
-The **private** key (`~/.ssh/two_bits_deploy`) goes into the GitHub secret `VPS_SSH_KEY` (step 2).
+The examples below use `~/.ssh/id_ed25519`. Replace it with your key's file name.
+
+Authorize that key for the `deploy` user and check that it works:
+
+```bash
+ssh-copy-id -i ~/.ssh/id_ed25519.pub deploy@76.13.55.119
+ssh -i ~/.ssh/id_ed25519 deploy@76.13.55.119 'docker ps'   # must work without sudo
+```
+
+> `ssh-copy-id` needs a way to log in as `deploy`, but that user has no password. If it fails, copy the
+> key over from the root account on the VPS instead:
+>
+> ```bash
+> sudo mkdir -p /home/deploy/.ssh
+> sudo cp /root/.ssh/authorized_keys /home/deploy/.ssh/authorized_keys
+> sudo chown -R deploy:deploy /home/deploy/.ssh
+> sudo chmod 700 /home/deploy/.ssh && sudo chmod 600 /home/deploy/.ssh/authorized_keys
+> ```
+
+The **private** key (`~/.ssh/id_ed25519`, the file **without** `.pub`) goes into the GitHub secret `VPS_SSH_KEY` (step 2):
+
+```bash
+cat ~/.ssh/id_ed25519          # copy everything, including the BEGIN/END lines
+```
+
+> The workflow expects a key **without a passphrase**. To check, run `ssh-keygen -y -f ~/.ssh/id_ed25519`:
+> if it asks for a passphrase, the key has one. In that case the workflow needs a `passphrase` input on both SSH steps.
 
 ### 1.4 Cloudflare Origin certificate
 
@@ -97,7 +121,7 @@ Repo → **Settings → Secrets and variables → Actions**
 | --- | --- |
 | `VPS_HOST` | `76.13.55.119` |
 | `VPS_USER` | `deploy` |
-| `VPS_SSH_KEY` | contents of `~/.ssh/two_bits_deploy` (private key, including BEGIN/END lines) |
+| `VPS_SSH_KEY` | contents of your existing private key, e.g. `~/.ssh/id_ed25519` (including BEGIN/END lines) |
 | `VPS_PORT` | *(optional)*, only if SSH is not on port 22 |
 
 **Variables** (optional; the defaults in the workflow match `.env.example`)
