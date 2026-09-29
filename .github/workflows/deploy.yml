@@ -30,10 +30,11 @@ jobs:
       # so stop here (production untouched) until the repo variable exists.
       - name: Require VITE_API_BASE
         env:
-          VITE_API_BASE: ${{ vars.VITE_API_BASE }}
+          # Accept it as a repo Variable or a Secret (the settings page has both tabs).
+          VITE_API_BASE: ${{ vars.VITE_API_BASE || secrets.VITE_API_BASE }}
         run: |
           if [ -z "$VITE_API_BASE" ]; then
-            echo "::error::Set the VITE_API_BASE repo variable (Settings → Secrets and variables → Actions → Variables), e.g. https://api.two-bits.dev"
+            echo "::error::Set VITE_API_BASE under Settings → Secrets and variables → Actions (Variables or Secrets tab), e.g. https://api.two-bits.dev"
             exit 1
           fi
 
@@ -56,7 +57,7 @@ jobs:
             ${{ env.IMAGE }}:${{ steps.meta.outputs.tag }}
             ${{ env.IMAGE }}:ping-latest
           build-args: |
-            VITE_API_BASE=${{ vars.VITE_API_BASE }}
+            VITE_API_BASE=${{ vars.VITE_API_BASE || secrets.VITE_API_BASE }}
           cache-from: type=gha,scope=ping
           cache-to: type=gha,mode=max,scope=ping
 
