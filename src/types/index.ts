@@ -16,6 +16,21 @@ export interface Service {
   description: string;
   tags: string[];
   icon: "web" | "mobile" | "pentest" | "training";
+  /** One-line promise, carried over from the Ping services page. */
+  subtitle: string;
+  /** Scene artwork from the Ping site (`public/services/*`). */
+  image: string;
+  /** What's included — the Ping checklist for this service. */
+  points: string[];
+}
+
+/** A capability that runs across both tracks rather than owning a bit. */
+export interface Capability {
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  points: string[];
 }
 
 export interface ServiceGroup {
@@ -33,6 +48,8 @@ export interface ProcessStep {
   title: string;
   description: string;
   bullets: string[];
+  /** What the client holds at the end of this phase. */
+  outcome: string;
 }
 
 export interface StackColumn {
@@ -49,6 +66,36 @@ export interface ContactNeed {
 export interface ContactInfoRow {
   label: string;
   value: string;
+  href?: string;
+}
+
+export interface HeroQuestion {
+  /** Matches a `heroIndex` code so the ticker can light up its cell. */
+  code: string;
+  text: string;
+}
+
+export interface Principle {
+  /** Three-bit index, e.g. "000". */
+  code: string;
+  text: string;
+}
+
+export interface Social {
+  label: string;
+  href: string;
+  icon: "linkedin" | "facebook" | "whatsapp";
+}
+
+/** A submission from the public contact form, as stored by the backend. */
+export interface ContactRequest {
+  id: string;
+  fullName: string;
+  email: string;
+  companyName?: string | null;
+  phone?: string | null;
+  message?: string | null;
+  createdAt: string;
 }
 
 export type TrustKind = "partner" | "client" | "research";

@@ -10,8 +10,8 @@ function Together() {
     <section id="together" className="pt-14 pb-8 sm:pt-20 sm:pb-12 md:pt-22">
       <Reveal className="mx-auto mb-10 flex max-w-[1280px] flex-col gap-6 px-4 sm:mb-14 sm:flex-row sm:items-end sm:justify-between sm:gap-12 sm:px-6 md:px-10">
         <div>
-          <h6 className="mb-3.5 text-[var(--tb-ink-accent)]">04 — Together</h6>
-          <h2 className="max-w-[18ch] text-[clamp(1.75rem,7vw,2.875rem)] tracking-[-0.02em]">
+          <h6 className="mb-3.5 text-[var(--tb-ink-accent)]">05 — Together</h6>
+          <h2 className="max-w-[18ch] text-[clamp(1.75rem,7vw,2.875rem)] leading-[1.04] tracking-[-0.02em]">
             PARTNERS, CLIENTS, AND PROGRAMS
           </h2>
         </div>
@@ -22,7 +22,7 @@ function Together() {
         </p>
       </Reveal>
 
-      <div className="grid gap-10 sm:gap-14">
+      <div className="grid grid-cols-1 gap-10 sm:gap-14">
         {trustGroups.map((group, groupIndex) => (
           <Reveal key={group.kind} delayMs={groupIndex * 80}>
             <div className="mx-auto mb-5 flex max-w-[1280px] flex-wrap items-baseline gap-x-3.5 gap-y-1 px-4 sm:px-6 md:px-10">
@@ -63,6 +63,16 @@ function LogoMarquee({
   reverse?: boolean;
   durationSec: number;
 }) {
+  // Looping one or two logos across the full width reads as a glitch —
+  // short groups sit still, aligned with the section's content column.
+  if (logos.length < 3) {
+    return (
+      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 md:px-10">
+        <LogoStrip logos={logos} />
+      </div>
+    );
+  }
+
   const set = padLogos(logos);
 
   return (

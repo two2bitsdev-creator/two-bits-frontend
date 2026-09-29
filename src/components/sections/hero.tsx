@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import { Blueprint } from "@/components/blueprint/blueprint";
@@ -8,10 +9,15 @@ import { MatrixRain } from "@/components/effects/matrix-rain";
 import { RainDensityControl } from "@/components/effects/rain-density-control";
 import { Terminal } from "@/components/effects/terminal";
 import { Button } from "@/components/ui/button";
-import { heroIndex } from "@/config/content";
+import { heroIndex, heroQuestions } from "@/config/content";
 import { siteConfig } from "@/config/site";
+import { useInterval } from "@/hooks/use-interval";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { useRainDensity } from "@/hooks/use-rain-density";
+import { useScramble } from "@/hooks/use-scramble";
+import { cn } from "@/lib/utils";
+
+const QUESTION_MS = 3200;
 
 const stagger = {
   hidden: {},
@@ -34,6 +40,16 @@ function Hero() {
   // at the "visible" values) instead of playing it — matching the site's
   // existing prefers-reduced-motion handling elsewhere.
   const initial = reduceMotion ? false : "hidden";
+
+  // Which service the question ticker is pointing at. Hovering an index
+  // cell pins it there; leaving resumes the cycle.
+  const [active, setActive] = useState(0);
+  const [pinned, setPinned] = useState(false);
+  useInterval(
+    () => setActive((i) => (i + 1) % heroQuestions.length),
+    pinned ? null : QUESTION_MS,
+  );
+  const activeCode = heroQuestions[active]?.code;
 
   return (
     <section
@@ -142,23 +158,46 @@ function Hero() {
             </motion.div>
           </motion.div>
 
-          <motion.div
-            variants={fadeUp}
-            className="border-border bg-border grid max-w-[560px] grid-cols-2 gap-px border sm:grid-cols-4"
-          >
-            {heroIndex.map((item) => (
-              <div
-                key={item.code}
-                className="bg-background min-w-0 px-3 py-3 sm:px-4 sm:py-3.5"
-              >
-                <div className="mb-1 font-mono text-[10px] text-[var(--tb-ink-accent)]">
-                  {item.code}
-                </div>
-                <div className="font-heading text-[13px] sm:text-[15px]">
-                  {item.label}
-                </div>
-              </div>
-            ))}
+          <motion.div variants={fadeUp} className="max-w-[560px]">
+            <QuestionTicker text={heroQuestions[active]?.text ?? ""} />
+            <div
+              className="border-border bg-border grid grid-cols-2 gap-px border sm:grid-cols-4"
+              onMouseLeave={() => setPinned(false)}
+            >
+              {heroIndex.map((item) => {
+                const lit = item.code === activeCode;
+                return (
+                  <div
+                    key={item.code}
+                    onMouseEnter={() => {
+                      const i = heroQuestions.findIndex(
+                        (q) => q.code === item.code,
+                      );
+                      if (i >= 0) setActive(i);
+                      setPinned(true);
+                    }}
+                    className={cn(
+                      "bg-background relative min-w-0 px-3 py-3 transition-colors duration-300 sm:px-4 sm:py-3.5",
+                      lit && "bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))]",
+                    )}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "bg-primary absolute inset-x-0 top-0 h-0.5 origin-left transition-transform duration-500",
+                        lit ? "scale-x-100" : "scale-x-0",
+                      )}
+                    />
+                    <div className="mb-1 font-mono text-[10px] text-[var(--tb-ink-accent)]">
+                      {item.code}
+                    </div>
+                    <div className="font-heading text-[13px] sm:text-[15px]">
+                      {item.label}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
         </motion.div>
 
@@ -167,6 +206,33 @@ function Hero() {
         </motion.div>
       </motion.div>
     </section>
+  );
+}
+
+/**
+ * One line of the ticker: the current visitor question, decoded from noise
+ * each time it changes. Decorative (the index grid carries the meaning),
+ * so it's hidden from assistive tech rather than announced every 3s.
+ */
+function QuestionTicker({ text }: { text: string }) {
+  const [display, trigger] = useScramble(text);
+
+  useEffect(() => {
+    trigger();
+  }, [text, trigger]);
+
+  return (
+    <div
+      aria-hidden="true"
+      className="mb-2.5 flex min-w-0 flex-wrap items-baseline gap-x-2.5 gap-y-1 font-mono text-[12px] sm:text-[13px]"
+    >
+      <span className="text-[var(--tb-ink-accent)]">?</span>
+      <span className="text-foreground">{display}</span>
+      <span className="animate-tb-blink bg-primary inline-block h-3 w-1.5 self-center" />
+      <span className="text-muted-foreground ml-auto">
+        {siteConfig.name.toLowerCase()} has it covered ↓
+      </span>
+    </div>
   );
 }
 

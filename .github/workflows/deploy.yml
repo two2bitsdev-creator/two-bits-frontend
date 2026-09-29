@@ -49,6 +49,7 @@ jobs:
             NEXT_PUBLIC_DEFAULT_THEME=${{ vars.NEXT_PUBLIC_DEFAULT_THEME || 'light' }}
             NEXT_PUBLIC_MOTION=${{ vars.NEXT_PUBLIC_MOTION || 'showpiece' }}
             NEXT_PUBLIC_RAIN_DENSITY=${{ vars.NEXT_PUBLIC_RAIN_DENSITY || '14' }}
+            NEXT_PUBLIC_API_BASE=${{ vars.NEXT_PUBLIC_API_BASE || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

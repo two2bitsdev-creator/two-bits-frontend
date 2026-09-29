@@ -96,6 +96,8 @@
   --animate-tb-spin: tb-spin 0.9s linear infinite;
   --animate-tb-pop: tb-pop 0.6s ease-out both;
   --animate-tb-bar: tb-bar 1s ease-out both;
+  /* Radar ring on the Ping network nodes (heritage motif). */
+  --animate-tb-ping: tb-ping 3.8s ease-out infinite;
 
   @keyframes tb-fall {
     from {
@@ -196,6 +198,20 @@
     to {
       opacity: 1;
       transform: none;
+    }
+  }
+  @keyframes tb-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    80% {
+      transform: scale(3.8);
+      opacity: 0.08;
+    }
+    100% {
+      transform: scale(4.2);
+      opacity: 0;
     }
   }
   @keyframes tb-bar {
@@ -377,6 +393,12 @@
   }
 }
 
+/* SVG elements scale around their own box, not the viewport origin. */
+.animate-tb-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 @media (max-width: 860px) {
   [data-tb-nav] {
     flex-wrap: wrap;
@@ -406,7 +428,8 @@
   .animate-tb-sweep,
   .animate-tb-spin,
   .animate-tb-pop,
-  .animate-tb-bar {
+  .animate-tb-bar,
+  .animate-tb-ping {
     animation: none !important;
   }
 }

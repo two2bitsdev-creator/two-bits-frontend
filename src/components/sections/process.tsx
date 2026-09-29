@@ -122,6 +122,12 @@ function Process() {
               </div>
             ))}
           </div>
+          <div className="mt-6.5 flex max-w-[46ch] flex-col gap-1.5 border-t border-white/16 pt-4 font-mono text-[12px] sm:flex-row sm:gap-3.5 sm:text-[12.5px]">
+            <span className="text-accent-400 shrink-0 tracking-[0.2em]">
+              OUTCOME →
+            </span>
+            <span className="text-white/85">{activeContent.outcome}</span>
+          </div>
         </div>
 
         <div key={`panel-${step}`} className="animate-tb-pop min-w-0">

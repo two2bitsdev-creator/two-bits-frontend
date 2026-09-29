@@ -20,12 +20,23 @@ export const env = createEnv({
       .min(0)
       .max(24)
       .default(14),
+    // Origin of the contact/inbox backend (inherited from the Ping stack).
+    // Optional: when unset, the contact form falls back to a prefilled
+    // mailto: and the /wp inbox shows a "not configured" notice.
+    NEXT_PUBLIC_API_BASE: z
+      .string()
+      .url()
+      .transform((url) => url.replace(/\/$/, ""))
+      .optional(),
   },
+  // Treat `NEXT_PUBLIC_API_BASE=` (empty) the same as unset.
+  emptyStringAsUndefined: true,
   runtimeEnv: {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_CONTACT_EMAIL: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
     NEXT_PUBLIC_DEFAULT_THEME: process.env.NEXT_PUBLIC_DEFAULT_THEME,
     NEXT_PUBLIC_MOTION: process.env.NEXT_PUBLIC_MOTION,
     NEXT_PUBLIC_RAIN_DENSITY: process.env.NEXT_PUBLIC_RAIN_DENSITY,
+    NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE,
   },
 });

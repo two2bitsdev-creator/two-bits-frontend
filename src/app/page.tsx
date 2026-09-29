@@ -1,3 +1,4 @@
+import { About } from "@/components/sections/about";
 import { BitDivider } from "@/components/sections/bit-divider";
 import { Contact } from "@/components/sections/contact";
 import { BitExplode } from "@/components/effects/bit-explode";
@@ -8,6 +9,7 @@ import { Services } from "@/components/sections/services";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { SiteHeader } from "@/components/sections/site-header";
 import { Stack } from "@/components/sections/stack";
+import { Together } from "@/components/sections/together";
 
 export default function Home() {
   return (
@@ -21,6 +23,8 @@ export default function Home() {
         <Process />
         <Stack />
         <Marquee />
+        <About />
+        <Together />
         <Contact />
       </main>
       <SiteFooter />

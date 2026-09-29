@@ -158,7 +158,11 @@ Repo → **Settings → Secrets and variables → Actions**
 **Variables** (optional; the defaults in the workflow match `.env.example`)
 
 `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_EMAIL`, `NEXT_PUBLIC_DEFAULT_THEME`,
-`NEXT_PUBLIC_MOTION`, `NEXT_PUBLIC_RAIN_DENSITY`
+`NEXT_PUBLIC_MOTION`, `NEXT_PUBLIC_RAIN_DENSITY`, `NEXT_PUBLIC_API_BASE`
+
+`NEXT_PUBLIC_API_BASE` is the origin of the contact/inbox backend (e.g. `https://api.two-bits.dev`).
+Leave it unset and the contact form falls back to a prefilled `mailto:`, and `/wp` shows a
+"not configured" notice. The backend must allow the site origin in CORS, with credentials for `/wp`.
 
 These values are baked into the image at build time, so changing one requires a rebuild (re-run the workflow).
 
