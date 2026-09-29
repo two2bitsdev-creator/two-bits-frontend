@@ -1,0 +1,102 @@
+name: Build & Deploy (Ping)
+
+# Production deploys from this branch. `main` (the Two Bits Next.js site)
+# is manual-only and can be run from the Actions tab to roll back.
+on:
+  push:
+    branches: [ping]
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/two2bitsdev-creator/two-bits-frontend
+  DEPLOY_DIR: /opt/two-bits/frontend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # The Vite bundle inlines the API origin and the app throws without it,
+      # so stop here (production untouched) until the repo variable exists.
+      - name: Require VITE_API_BASE
+        env:
+          VITE_API_BASE: ${{ vars.VITE_API_BASE }}
+        run: |
+          if [ -z "$VITE_API_BASE" ]; then
+            echo "::error::Set the VITE_API_BASE repo variable (Settings → Secrets and variables → Actions → Variables), e.g. https://api.two-bits.dev"
+            exit 1
+          fi
+
+      - id: meta
+        run: echo "tag=ping-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ steps.meta.outputs.tag }}
+            ${{ env.IMAGE }}:ping-latest
+          build-args: |
+            VITE_API_BASE=${{ vars.VITE_API_BASE }}
+          cache-from: type=gha,scope=ping
+          cache-to: type=gha,mode=max,scope=ping
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy deploy files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          source: "deploy/docker-compose.yml,deploy/deploy.sh"
+          target: ${{ env.DEPLOY_DIR }}
+          strip_components: 1
+
+      - name: Pull & restart on VPS
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          IMAGE_TAG: ${{ needs.build.outputs.tag }}
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOY_DIR: ${{ env.DEPLOY_DIR }}
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          envs: IMAGE_TAG,GHCR_USER,GHCR_TOKEN,DEPLOY_DIR
+          script: |
+            set -e
+            # Short-lived job token: log in, pull, log out so no stale creds stay on the box.
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
+            chmod +x "$DEPLOY_DIR/deploy.sh"
+            "$DEPLOY_DIR/deploy.sh" "$IMAGE_TAG"

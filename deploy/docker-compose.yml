@@ -1,0 +1,19 @@
+name: two-bits
+
+services:
+  # Same service/container name as the Next.js build on `main`, so deploying
+  # either branch replaces the other in the one production slot.
+  frontend:
+    image: ghcr.io/two2bitsdev-creator/two-bits-frontend:${IMAGE_TAG:-ping-latest}
+    container_name: two-bits-frontend
+    restart: unless-stopped
+    # Loopback only — the host's nginx terminates TLS and proxies to this port.
+    # The Ping image is nginx serving the Vite build on :80.
+    ports:
+      - "127.0.0.1:18420:80"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
