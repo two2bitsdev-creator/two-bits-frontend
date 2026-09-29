@@ -1,8 +1,9 @@
 name: Build & Deploy
 
+# Production now deploys from the `ping` branch (see its deploy workflow).
+# This Two Bits build is manual-only: run it from the Actions tab to roll
+# production back to the Next.js site.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
