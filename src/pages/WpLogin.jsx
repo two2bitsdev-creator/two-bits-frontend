@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { loginWp } from "@/lib/api";
-import { pingLogoPng } from "@/assets";
+import { twoBitsLogo } from "@/assets";
 import { ctaNavButtonClassName } from "@/lib/ctaNavButton";
 import { headerNavTabClassName } from "@/lib/headerNavTab";
 import { surfaceCard, surfaceMuted } from "@/lib/surface";
@@ -46,12 +46,12 @@ export default function WpLogin() {
               "relative z-[1] inline-flex w-fit max-w-full items-center gap-3 py-2.5 pl-2.5 pr-4"
             )}
           >
-            <img src={pingLogoPng} alt="" className="h-9 w-auto object-contain" width={140} height={40} />
+            <img src={twoBitsLogo} alt="" className="h-9 w-auto object-contain" width={604} height={110} />
             <span className="font-code text-[10px] uppercase tracking-[0.18em] text-n-3">← Site</span>
           </Link>
           <div className="relative z-[1] flex flex-1 flex-col justify-center py-12">
             <div className={cn(surfaceMuted, "mx-auto max-w-md p-8 text-center shadow-lg shadow-black/30")}>
-              <p className="font-grotesk text-lg font-semibold tracking-tight text-n-1">Ping workspace</p>
+              <p className="font-grotesk text-lg font-semibold tracking-tight text-n-1">Two Bits workspace</p>
               <p className="mt-2 text-sm text-n-3">
                 Review client requests submitted from the public site. Sessions use secure HTTP-only cookies.
               </p>
@@ -63,7 +63,7 @@ export default function WpLogin() {
           <p className="relative z-[1] font-code text-[10px] uppercase tracking-wider text-n-4">
             Authorized operators only ·{" "}
             <Link to="/#contact" className="text-color-1 underline decoration-color-1/50 underline-offset-2 hover:text-color-3">
-              Contact Ping
+              Contact Two Bits
             </Link>
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function WpLogin() {
                 to="/"
                 className={cn(headerNavTabClassName(false), "inline-flex w-fit items-center gap-2 py-2 pl-2 pr-3")}
               >
-                <img src={pingLogoPng} alt="Ping" className="h-8 w-auto object-contain" width={120} height={32} />
+                <img src={twoBitsLogo} alt="Two Bits" className="h-8 w-auto object-contain" width={604} height={110} />
               </Link>
             </div>
 

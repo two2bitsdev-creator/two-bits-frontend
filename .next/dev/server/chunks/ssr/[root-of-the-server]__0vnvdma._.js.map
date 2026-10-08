@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///D:/two-bits/Company_Site/frontend/src/components/theme/theme-provider.tsx"],"sourcesContent":["\"use client\";\r\n\r\nimport { ThemeProvider as NextThemesProvider } from \"next-themes\";\r\nimport type { ComponentProps } from \"react\";\r\n\r\n/**\r\n * Wraps `next-themes`, giving the app `.dark`-class theming with\r\n * no-flash SSR (handled by `suppressHydrationWarning` on `<html>` in\r\n * `app/layout.tsx`) and `localStorage` persistence out of the box.\r\n */\r\nfunction ThemeProvider({\r\n  children,\r\n  ...props\r\n}: ComponentProps<typeof NextThemesProvider>) {\r\n  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;\r\n}\r\n\r\nexport { ThemeProvider };\r\n"],"names":["ThemeProvider","children","props"],"mappings":";;;;;AAEA;AAFA;;;AAKA;;;;CAIC,GACD,SAASA,cAAc,EACrBC,QAAQ,EACR,GAAGC,OACuC;IAC1C,qBAAO,8OAAC,iKAAkB;QAAE,GAAGA,KAAK;kBAAGD;;;;;;AACzC"}}]
+}

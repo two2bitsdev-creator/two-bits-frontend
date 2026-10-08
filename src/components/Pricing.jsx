@@ -28,7 +28,7 @@ const Pricing = () => {
         </div>
 
         <Heading
-          tag="Get started with Ping"
+          tag="Get started with Two Bits"
           title="Pay once, use forever"
         />
 

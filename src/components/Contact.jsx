@@ -9,8 +9,8 @@ import { surfaceCard, surfacePanel } from "@/lib/surface";
 const contactChannels = [
   {
     title: "Email",
-    detail: "support@pingtech.dev",
-    href: "mailto:support@pingtech.dev",
+    detail: "hello@two-bits.dev",
+    href: "mailto:hello@two-bits.dev",
     Icon: Mail,
   },
   {
@@ -58,7 +58,7 @@ const Contact = () => {
               </h2>
               <p className="body-1 max-w-[45rem] text-n-2">
                 Whether you&apos;re launching a new product, modernizing your business, or exploring AI opportunities,
-                PingTech is here to help turn your ideas into secure, scalable, and future-ready digital solutions.
+                Two Bits is here to help turn your ideas into secure, scalable, and future-ready digital solutions.
               </p>
 
               <motion.a

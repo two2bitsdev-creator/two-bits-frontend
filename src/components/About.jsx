@@ -30,14 +30,14 @@ const About = () => {
           className="relative z-1"
         >
           <Heading
-            tag="About Ping"
+            tag="About Two Bits"
             className="mb-12 lg:mb-14"
             titleNode={
               <>
                 Technology That <span className="gradient-text">Solves</span> Real Business Challenges
               </>
             }
-            text="At PING, we're more than a software company - we're your technology partner. We work closely with businesses to understand their goals, overcome challenges, and deliver solutions that create lasting value."
+            text="At Two Bits, we're more than a software company - we're your technology partner. We work closely with businesses to understand their goals, overcome challenges, and deliver solutions that create lasting value."
           />
 
           <div className="relative mx-auto mb-12 max-w-[68rem] lg:mb-14">

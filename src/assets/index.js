@@ -1,5 +1,4 @@
 import brainwave from "./brainwave.svg";
-import pingLogo from "./ping-logo.svg";
 import check from "./check.svg";
 import brainwaveSymbol from "./brainwave-symbol.svg";
 import brainwaveWhiteSymbol from "./brainwave-symbol-white.svg";
@@ -24,7 +23,7 @@ import background from "./background.jpg";
 import curve from "./hero/curve.png";
 import robot from "./hero/robot.jpg";
 import heroBackground from "./hero/hero-background.jpg";
-import pingHeroDashboard from "./hero/ping-hero-dashboard.png";
+import twoBitsHeroDashboard from "./hero/two-bits-hero-dashboard.png";
 
 import curve1 from "./collaboration/curve-1.svg";
 import curve2 from "./collaboration/curve-2.svg";
@@ -93,11 +92,10 @@ import client1Logo from "./clients/today/INMOfFouKHRUJ1Vnlp67FrhWrHY.avif";
 import client2Logo from "./clients/today/ZF85fej9GZcvGSZ4pP6Lop2gE.avif";
 
 // Company logo
-import pingLogoPng from "./clients/ping-logo.png";
+import twoBitsLogo from "./two-bits-logo.png";
 
 export {
   brainwave,
-  pingLogo,
   check,
   check2,
   loading1,
@@ -121,7 +119,7 @@ export {
   curve,
   robot,
   heroBackground,
-  pingHeroDashboard,
+  twoBitsHeroDashboard,
   curve1,
   curve2,
   discord,
@@ -179,5 +177,5 @@ export {
   kalimatLogo,
   client1Logo,
   client2Logo,
-  pingLogoPng,
+  twoBitsLogo,
 };

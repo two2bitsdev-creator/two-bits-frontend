@@ -1,0 +1,3 @@
+module.exports=[33354,(a,b,c)=>{"use strict";c._=function(a){return a&&a.__esModule?a:{default:a}}},25722,a=>{"use strict";var b=a.i(87924),c=a.i(68114);function d(){return(0,b.jsxs)(b.Fragment,{children:[(0,b.jsx)("i",{className:"tb-corner tb-corner-tl","aria-hidden":"true"}),(0,b.jsx)("i",{className:"tb-corner tb-corner-tr","aria-hidden":"true"}),(0,b.jsx)("i",{className:"tb-corner tb-corner-bl","aria-hidden":"true"}),(0,b.jsx)("i",{className:"tb-corner tb-corner-br","aria-hidden":"true"})]})}a.s(["Blueprint",0,function({className:a,children:e,...f}){return(0,b.jsxs)("div",{"data-slot":"blueprint",className:(0,c.cn)("tb-blueprint",a),...f,children:[(0,b.jsx)(d,{}),e]})}])}];
+
+//# sourceMappingURL=_18d175l._.js.map

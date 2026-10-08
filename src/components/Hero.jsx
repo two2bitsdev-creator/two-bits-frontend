@@ -1,4 +1,4 @@
-import { pingHeroDashboard } from "../assets";
+import { twoBitsHeroDashboard } from "../assets";
 import Section from "./Section";
 import { useRef } from "react";
 import { motion } from "framer-motion";
@@ -82,7 +82,7 @@ function HeroQuestionStrip({ active }) {
         }}
         className="mt-5 text-center font-grotesk text-lg font-semibold tracking-tight text-n-1 sm:text-xl"
       >
-        <span className="text-color-1">PingTech</span> has you covered.
+        <span className="text-color-1">Two Bits</span> has you covered.
       </motion.p>
     </motion.div>
   );
@@ -112,7 +112,7 @@ const Hero = () => {
           </motion.div>
           <motion.h1 variants={fadeInUp} className="h1 mb-4 break-words px-0.5 sm:mb-6 sm:px-0">
             Transform Your Business with{" "}
-            <span className="gradient-text inline-block px-1">Ping</span>
+            <span className="gradient-text inline-block px-1">Two Bits</span>
           </motion.h1>
           <motion.p variants={fadeInUp} className="body-1 mx-auto mb-8 max-w-3xl text-n-2 lg:mb-10">
             We design and develop high-performance web applications, mobile apps, AI-powered solutions, and secure
@@ -148,11 +148,11 @@ const Hero = () => {
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,166,81,0.18),transparent_42%)]" />
             <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-color-1/70 to-transparent" />
             <motion.img
-              src={pingHeroDashboard}
+              src={twoBitsHeroDashboard}
               className="relative z-1 aspect-[3/2] w-full rounded-[0.95rem] object-cover object-center"
               width={1536}
               height={1024}
-              alt="Ping software dashboard across web and mobile interfaces"
+              alt="Two Bits software dashboard across web and mobile interfaces"
               initial={{ opacity: 0, y: 28, scale: 0.985 }}
               animate={
                 imageInView

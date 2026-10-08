@@ -2,7 +2,7 @@ import Section from "./Section";
 import { Facebook, Linkedin, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { surfacePanel } from "@/lib/surface";
-import { pingLogoPng } from "@/assets";
+import { twoBitsLogo } from "@/assets";
 
 const footerLinks = [
   {
@@ -48,9 +48,11 @@ const Footer = () => {
           <div className="relative mx-auto grid max-w-[70rem] gap-6 pb-4 lg:grid-cols-[1.08fr_0.94fr_0.72fr] lg:items-center lg:gap-6">
             <div className="max-w-[19rem]">
               <img
-                src={pingLogoPng}
-                alt="PingTech"
-                className="h-auto w-[6.9rem] object-contain"
+                src={twoBitsLogo}
+                alt="Two Bits"
+                width={604}
+                height={110}
+                className="h-auto w-[10rem] object-contain"
               />
               <p className="mt-3 max-w-[17rem] font-grotesk text-[1rem] leading-[1.6] text-n-2 sm:text-[1.08rem]">
                 Building secure, intelligent, and future-ready <span className="text-color-2">digital solutions.</span>
@@ -102,7 +104,7 @@ const Footer = () => {
 
           <div className="relative border-t border-white/[0.08] px-2 py-3.5 text-[0.82rem] text-n-4">
             <div className="mx-auto max-w-[70rem] text-left">
-              &copy; 2026 <span className="text-color-2">PingTech.</span> All rights reserved.
+              &copy; 2026 <span className="text-color-2">Two Bits.</span> All rights reserved.
             </div>
           </div>
         </footer>

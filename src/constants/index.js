@@ -72,7 +72,7 @@ export const notificationImages = [notification4, notification3, notification2];
 
 export const companyLogos = [edtechsLogo, ietLogo, arcLogo, kalimatLogo, client1Logo, client2Logo];
 
-export const PingServices = [
+export const TwoBitsServices = [
   "Website Development",
   "Mobile App Development",
   "Penetration Testing",

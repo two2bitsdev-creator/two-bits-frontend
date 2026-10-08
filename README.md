@@ -1,6 +1,6 @@
-﻿# Ping - Software Company Website
+﻿# Two Bits - Software Company Website
 
-A modern, responsive website for Ping, a software company specializing in:
+A modern, responsive website for Two Bits, a software company specializing in:
 - High-performance web applications
 - Mobile apps
 - AI-powered solutions
@@ -8,10 +8,10 @@ A modern, responsive website for Ping, a software company specializing in:
 
 ## Hero Section
 
-The current hero section introduces Ping with a direct software-company message:
+The current hero section introduces Two Bits with a direct software-company message:
 
 - **Tagline:** `Ship quality software`
-- **Headline:** `Transform Your Business with Ping`
+- **Headline:** `Transform Your Business with Two Bits`
 - **Supporting copy:** We design and develop high-performance web applications, mobile apps, AI-powered solutions, and secure digital platforms that help businesses innovate, automate, and succeed.
 - **Call to action:** `Explore Our Services`
 
@@ -25,14 +25,14 @@ The current hero section introduces Ping with a direct software-company message:
 
 ## Project Overview
 
-Ping's website presents the company as a software, AI, and security partner. The site combines a responsive landing page, animated hero visuals, service messaging, client logos, a contact form, and a restricted operator dashboard for submitted requests.
+Two Bits' website presents the company as a software, AI, and security partner. The site combines a responsive landing page, animated hero visuals, service messaging, client logos, a contact form, and a restricted operator dashboard for submitted requests.
 
 ## Features
 
 - Responsive landing page for a software company brand
 - Animated hero section with dashboard artwork and subtle motion effects
 - Sections for about, services, process, clients, contact, and footer
-- Contact request form connected to the Ping API
+- Contact request form connected to the Two Bits API
 - Restricted `/wp` dashboard for reviewing submitted client requests
 
 ## Process Section
@@ -55,7 +55,7 @@ All visuals reset their internal animation state each time the step becomes acti
 The footer (`src/components/Footer.jsx`) is a rounded card with three columns separated by a vertical divider, plus a bottom copyright bar.
 
 **Left column — brand identity**
-- PingTech logo (`src/assets/clients/ping-logo.png`)
+- Two Bits logo (`src/assets/two-bits-logo.png`)
 - Tagline: `Building secure, intelligent, and future-ready` **`digital solutions.`** (accent colour on the last two words)
 
 **Centre column — social links**
@@ -74,7 +74,7 @@ Each link is a labelled icon tile that lifts on hover.
 - Sub-label: `Ready for new projects.`
 
 **Bottom bar**
-- `© 2026 PingTech. All rights reserved.` — `PingTech` uses the site's teal accent colour
+- `© 2026 Two Bits. All rights reserved.` — `Two Bits` uses the site's teal accent colour
 
 ## Quick Start
 
@@ -104,7 +104,7 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
 
-**With the Ping API**
+**With the Two Bits API**
 
 In another terminal, from the repo's `backend` folder run `npm run dev` so the API is on port **4000**. Copy `frontend/.env.example` to `frontend/.env` if needed and set **`VITE_API_BASE=http://localhost:4000`** so the browser calls the API directly (backend `ALLOWED_ORIGINS` must include `http://localhost:5173`).
 

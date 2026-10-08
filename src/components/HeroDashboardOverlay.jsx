@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 /**
- * SVG overlay placed on top of ping-hero-dashboard.png.
+ * SVG overlay placed on top of two-bits-hero-dashboard.png.
  * Traces the six dotted connection lines baked into the raster with
  * animated stroke-dashoffset (flowing teal dots) and pulsing glow dots
  * at all eight endpoint/mid-point positions.

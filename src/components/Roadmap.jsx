@@ -88,7 +88,7 @@ const DiscoverVisual = () => {
       <TerminalBar title="project-discovery.sh" />
       <div className="min-h-[13rem] px-5 py-5">
         <p className="mb-4 font-code text-xs text-[#4a5068]">
-          $&nbsp;<span className="text-[#00dbaa]">ping init --discover</span>
+          $&nbsp;<span className="text-[#00dbaa]">twobits init --discover</span>
         </p>
         <div className="space-y-2.5">
           {discoveryItems.map((item, i) =>

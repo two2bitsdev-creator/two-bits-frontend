@@ -263,7 +263,7 @@ const HeroDashboardCard = memo(() => {
                 animate={active ? { boxShadow: ["0 0 4px #00A65150", "0 0 9px #00A65180", "0 0 4px #00A65150"] } : {}}
                 transition={{ duration: 3, repeat: Infinity }}
               />
-              <span className="text-[0.54rem] font-bold text-white">PingTech</span>
+              <span className="text-[0.54rem] font-bold text-white">Two Bits</span>
             </div>
             {["Dashboard","Analytics","Projects","Tasks","Team","AI Assistant","Settings"].map((item, i) => (
               <div

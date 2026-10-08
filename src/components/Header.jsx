@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 import { navigation } from "../constants";
-import { pingLogoPng } from "../assets";
+import { twoBitsLogo } from "../assets";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -160,10 +160,10 @@ const Header = () => {
             className="group flex min-w-0 shrink-0 flex-col items-start justify-center gap-0.5 pr-3 sm:min-w-[12rem] md:min-w-[14rem] lg:pr-6 xl:min-w-[17rem]"
           >
             <img
-              src={pingLogoPng}
-              width={220}
-              height={50}
-              alt="Ping"
+              src={twoBitsLogo}
+              width={604}
+              height={110}
+              alt="Two Bits"
               className="block h-7 w-auto max-w-[8rem] object-contain object-left opacity-95 transition-opacity group-hover:opacity-100 sm:h-8 sm:max-w-[11rem] md:max-w-[12.5rem]"
             />
             <span className="hidden pl-0.5 font-code text-[0.62rem] uppercase leading-none tracking-[0.16em] text-n-2 transition-colors group-hover:text-color-1 sm:block">

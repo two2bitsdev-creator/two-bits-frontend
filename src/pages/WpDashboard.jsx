@@ -4,7 +4,7 @@ import { Loader2, LogOut, RefreshCcw } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { fetchClientRequests, logoutWp, authMe } from "@/lib/api";
-import { pingLogoPng } from "@/assets";
+import { twoBitsLogo } from "@/assets";
 import { headerNavTabBase, headerNavTabClassName } from "@/lib/headerNavTab";
 import { surfaceMuted } from "@/lib/surface";
 import { cn } from "@/lib/utils";
@@ -89,7 +89,7 @@ export default function WpDashboard() {
         <div className="border-b border-n-6/80 bg-[#000000] shadow-[0_8px_32px_-12px_rgba(0,0,0,0.65)]">
           <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-5 sm:py-4 md:px-8">
             <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
-              <img src={pingLogoPng} alt="Ping" className="h-7 w-auto shrink-0 object-contain opacity-95 sm:h-8" width={112} height={32} />
+              <img src={twoBitsLogo} alt="Two Bits" className="h-7 w-auto shrink-0 object-contain opacity-95 sm:h-8" width={604} height={110} />
               <div className="min-w-0 font-code text-[10px] uppercase leading-tight tracking-wide text-n-4 sm:text-xs">
                 <span className="hidden text-n-5 sm:inline">Inbox · </span>
                 <span className="block truncate text-n-2 sm:inline">{email}</span>

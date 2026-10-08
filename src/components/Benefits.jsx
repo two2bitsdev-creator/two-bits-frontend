@@ -66,7 +66,7 @@ const Benefits = () => {
         <Heading
           className="md:max-w-md lg:max-w-2xl"
           tag="Expertise"
-          title="Why choose Ping for your technology needs"
+          title="Why choose Two Bits for your technology needs"
           text="We deliver exceptional results through innovative solutions and expert expertise"
         />
 
