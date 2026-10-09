@@ -93,6 +93,7 @@ import client2Logo from "./clients/today/ZF85fej9GZcvGSZ4pP6Lop2gE.avif";
 
 // Company logo
 import twoBitsLogo from "./two-bits-logo.png";
+import twoBitsIcon from "./two-bits-icon.png";
 
 export {
   brainwave,
@@ -178,4 +179,5 @@ export {
   client1Logo,
   client2Logo,
   twoBitsLogo,
+  twoBitsIcon,
 };

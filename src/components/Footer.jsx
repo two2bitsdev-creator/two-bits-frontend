@@ -50,8 +50,8 @@ const Footer = () => {
               <img
                 src={twoBitsLogo}
                 alt="Two Bits"
-                width={604}
-                height={110}
+                width={1369}
+                height={224}
                 className="h-auto w-[10rem] object-contain"
               />
               <p className="mt-3 max-w-[17rem] font-grotesk text-[1rem] leading-[1.6] text-n-2 sm:text-[1.08rem]">

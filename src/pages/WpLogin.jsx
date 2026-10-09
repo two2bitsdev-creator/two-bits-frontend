@@ -46,7 +46,7 @@ export default function WpLogin() {
               "relative z-[1] inline-flex w-fit max-w-full items-center gap-3 py-2.5 pl-2.5 pr-4"
             )}
           >
-            <img src={twoBitsLogo} alt="" className="h-9 w-auto object-contain" width={604} height={110} />
+            <img src={twoBitsLogo} alt="" className="h-9 w-auto object-contain" width={1369} height={224} />
             <span className="font-code text-[10px] uppercase tracking-[0.18em] text-n-3">← Site</span>
           </Link>
           <div className="relative z-[1] flex flex-1 flex-col justify-center py-12">
@@ -75,7 +75,7 @@ export default function WpLogin() {
                 to="/"
                 className={cn(headerNavTabClassName(false), "inline-flex w-fit items-center gap-2 py-2 pl-2 pr-3")}
               >
-                <img src={twoBitsLogo} alt="Two Bits" className="h-8 w-auto object-contain" width={604} height={110} />
+                <img src={twoBitsLogo} alt="Two Bits" className="h-8 w-auto object-contain" width={1369} height={224} />
               </Link>
             </div>
 
